@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='CSS/input.css') }}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Generador JSON</title>
+    </head>
+    <body>
+        <!-- Contenido común a todas las páginas -->
+        <img id="logo" src="{{ url_for('static', filename='Photos/ms1.jpg') }}" alt="Logo de tu compañía" class="logo">
+
+        <div id="nav-bar">
+            <!-- Barra de navegación común -->
+            <!-- <span class="nav-title">Generador JSON</span> -->
+            <button id="inputPageBtn" onclick="navigateTo('inputPageContent')">Input</button>
+            <button id="rulesPageBtn" onclick="navigateTo('rulesPageContent')">Rules</button>
+
+             <!-- Menú desplegable -->
+             <div class="dropdown">
+                <button class="dropbtn">Acciones</button>
+                <div class="dropdown-content">
+                    <!-- Botón para generar JSON -->
+                    <button onclick="generateJSON()">Generar JSON</button>
+                    <!-- Botón para cargar JSON desde local -->
+                    <button onclick="loadJSON()">Cargar JSON</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="inputPageContent" class="clearfix">
+            {% block inputPageContent %}{% endblock %}
+        </div>
+        <div id="rulesPageContent" class="clearfix">
+            {% block rulesPageContent %}{% endblock %}
+        </div>
+        <div id="showRulePageContent" class="clearfix">
+            {% block showRulePageContent %}{% endblock %}
+        </div>
+        <div id="infoContainer"></div>
+
+        <footer class="footer">
+            <p>© 2024 Managemet Solutions.</p>
+            <p class="footer-text">Versión 2.7</p>
+            <p class="footer-text">Soporte: +51 950586876</p>
+        </footer>
+        <script>
+            function navigateTo(page) {
+                // Agrega una clase al body para iniciar la animación
+                document.body.classList.add('transition');
+                
+                if(page == 'inputPageContent'){
+                    setTimeout(function() {
+                        window.location.href = '/input';
+                    }, 500);
+                }
+                else if(page == 'rulesPageContent'){
+                    setTimeout(function() {
+                        window.location.href = '/rules';
+                    }, 500);
+
+                }
+            }
+
+            function loadSection(section) {
+                fetch('/' + section)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('content').innerHTML = data;
+
+                        // Agrega el botón solo cuando se carga el formulario
+                        if (section === 'input') {
+                            addGenerateButton();
+                        }
+                    });
+            }
+
+            function addGenerateButton() {
+                // Crea el botón
+                var button = document.createElement('button');
+                button.textContent = 'Generar JSON';
+                button.type = 'button';
+                button.onclick = generateJSON;
+
+                // Agrega el botón al formulario
+                var formSection = document.getElementById('main-form');
+                formSection.appendChild(button);
+            }
+
+            function handleClick(key, value) {
+                // Lógica para manejar el clic en el elemento del diccionario
+                alert(`Clic en ${key} con valor ${JSON.stringify(value)}`);
+            }
+
+            function generateJSON() {
+                var formData = new FormData(document.getElementById('data-form'));
+                // Realiza la solicitud POST para generar el JSON
+                fetch('/generadorJSON', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al generar el JSON');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Crea un enlace temporal para descargar el archivo
+                    window.showSaveFilePicker()
+                        .then(fileHandle => {
+                            // Obtiene el nombre del archivo desde el handle del archivo
+                            var fileName = fileHandle.name;
+
+                            // Crea un objeto de escritura de archivo
+                            return fileHandle.createWritable()
+                                .then(writer => {
+                                    // Escribe los datos en el archivo
+                                    writer.write(data.generated_json);
+                                    // Finaliza la escritura del archivo
+                                    return writer.close();
+                                })
+                                .then(() => {
+                                    alert('JSON generado exitosamente');
+                                    // Limpia los campos del formulario después de generar el JSON
+                                    var form = document.getElementById('data-form');
+                                    form.reset();
+                                });
+                        })
+                        .catch(error => {
+                            alert('Error al generar el JSON');
+                            console.error('Error:', error);
+                        });
+                })
+                .catch(error => {
+                    alert('Error al generar el JSON');
+                    console.error('Error:', error);
+                });
+            }
+
+            function initHelpIcons() {
+                var infoContainer = createInfoContainer(); // Crea el contenedor de información
+
+                // Obtén todas las imágenes con la clase 'help-icon'
+                var helpIcons = document.querySelectorAll('.help-icon');
+
+                // helpIcons.forEach(function (icon) {
+                //     icon.addEventListener('mouseover', function (event) {
+                //         // Obtiene la info desde el atributo data-regla
+                //         var campo = event.target.dataset.regla;
+                //         console.log("regla", campo)
+                //         //*****FALTA DEFINIR AQUÍ LA INFORMACIÓN QUE SE SACARÁ EN EL RECUADRO
+                //         var definicion = "Prueba";
+                //         if (campo == "")
+
+                //         // Muestra la información en el cuadro de diálogo
+                //         showInfoDialog(infoContainer, event.clientX, event.clientY, campo, definicion);
+                //     });
+
+                //     icon.addEventListener('mouseout', function () {
+                //         // Oculta el cuadro de diálogo cuando el ratón sale del icono de ayuda
+                //         hideInfoDialog(infoContainer);
+                //     });
+                // });
+                fetch('/get_campos_info')
+                    .then(response => response.json())
+                    .then(data => {
+                        var informacion_campos = data;
+                        console.log(informacion_campos)
+                        helpIcons.forEach(function (icon) {
+                            icon.addEventListener('mouseover', function (event) {
+                                var campo = event.target.dataset.regla;
+                                console.log(campo)
+                                var definicion = informacion_campos[campo] || "Información no disponible";
+                                showInfoDialog(infoContainer, event.clientX, event.clientY, campo, definicion);
+                            });
+
+                            icon.addEventListener('mouseout', function () {
+                                hideInfoDialog(infoContainer);
+                            });
+                        });
+                    })
+                    .catch(error => console.error('Error al obtener la información de campos:', error));
+            }
+        
+
+            // Función para crear el contenedor de información
+            function createInfoContainer() {
+                var infoContainer = document.createElement('div');
+                infoContainer.id = 'infoContainer';
+                infoContainer.style.position = 'absolute';
+                infoContainer.style.display = 'none';
+                document.body.appendChild(infoContainer);
+                return infoContainer;
+            }
+
+            // Función para mostrar el cuadro de diálogo con la información
+            function showInfoDialog(container, x, y, campo, definicion) {
+                container.innerHTML = "<strong>" + campo + ":</strong><br>" + definicion;
+                container.style.left = x + 'px';
+                container.style.top = y + 'px';
+                container.style.display = 'block';
+            }
+
+            // Función para ocultar el cuadro de diálogo
+            function hideInfoDialog(container) {
+                container.innerHTML = '';
+                container.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (!event.target.matches('.dropbtn')) {
+                    var dropdowns = document.getElementsByClassName('dropdown-content');
+                    for (var i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
+
+            function toggleFields() {
+                var selectedTypeInput = document.getElementById('type_input').value;
+                var selectedTypeError = document.getElementById('type_error').value;
+                var selectedTypeOutput = document.getElementById('type_output').value;
+                var selectedTypeData = document.getElementById('type_data').value;
+
+                // Oculta todos los campos
+                hideAllFields();
+
+                // Muestra los campos según el tipo seleccionado
+                if (selectedTypeInput == 'csv' || selectedTypeInput == 'prod_csv') {
+                    showFields(['path_input', 'header_input', 'delimiter_input', 'account_input', 'key_input']);
+                    showLabels(['info-path', 'info-header', 'info-delimiter', 'info-account', 'info-key']);
+                } else if (selectedTypeInput == 'delta' || selectedTypeInput == 'parquet' || selectedTypeInput == 'prod_parquet') {
+                    showFields(['path_input', 'account_input', 'key_input']);
+                    showLabels(['info-path', 'info-account', 'info-key']);
+                } else if (selectedTypeInput == 'hive') {
+                    showFields(['dbtable_input']);
+                    showLabels(['info-db-table']);
+                } else if (selectedTypeInput == 'postgre' || selectedTypeInput == 'mysql' || selectedTypeInput == 'sqlserver') {
+                    showFields(['host_input', 'port_input', 'dbname_input', 'dbtable_input', 'Ddbuer_input', 'dbpassword_input']);
+                    showLabels(['info-host', 'info-port', 'info-db-name', 'info-db-table', 'info-db-user', 'info-db-pswd']);
+                } else if (selectedTypeInput == 'teradata') {
+                    showFields(['host_input', 'dbname_input', 'dbtable_input', 'Ddbuer_input', 'dbpassword_input']);
+                    showLabels(['info-host', 'info-db-name', 'info-db-table', 'info-db-user', 'info-db-pswd']);
+                } else if (selectedTypeInput == 'synapse') {
+                    showFields(['account_input', 'key_input', 'host_input', 'dbtable_input', 'temppath_input']);
+                    showLabels(['info-account', 'info-key', 'info-host', 'info-db-table', 'info-temp-path']);
+                } else if (selectedTypeInput == 'oracle') {
+                    showFields(['host_input', 'port_input', 'dbtable_input', 'Ddbuer_input', 'dbpassword_input']);
+                    showLabels(['info-host', 'info-port', 'info-db-table', 'info-db-user', 'info-db-pswd']);
+                }
+
+                if (selectedTypeError == 'csv' || selectedTypeError == 'prod_csv') {
+                    showFields(['header_error', 'delimiter_error', 'account_error', 'key_error']);
+                    showLabels(['info-header_error', 'info-delimiter_error', 'info-account_error', 'info-key_error']);
+                } else if (selectedTypeError == 'delta') {
+                    showFields(['account_error', 'key_error']);
+                    showLabels(['info-account_error', 'info-key_error']);
+                }
+
+                if (selectedTypeOutput == 'csv' || selectedTypeOutput == 'prod_csv') {
+                    showFields(['header_output', 'delimiter_output', 'account_output', 'key_output']);
+                    showLabels(['info-header_output', 'info-delimiter_output', 'info-account_output', 'info-key_output']);
+                } else if (selectedTypeOutput == 'delta') {
+                    showFields(['account_output', 'key_output']);
+                    showLabels(['info-account_output', 'info-key_output']);
+                }
+
+                if (selectedTypeData == 'csv' || selectedTypeData == 'prod_csv') {
+                    showFields(['header_data', 'delimiter_data', 'account_data', 'key_data']);
+                    showLabels(['info-header_data', 'info-delimiter_data', 'info-account_data', 'info-key_data']);
+                } else if (selectedTypeData == 'delta') {
+                    showFields(['account_data', 'key_data']);
+                    showLabels(['info-account_data', 'info-key_data']);
+                }
+            }
+
+            // Oculta todos los campos
+            function hideAllFields() {
+                var fields = document.querySelectorAll('.input-field');
+                var labels = document.querySelectorAll('.info-input');
+
+                fields.forEach(function(field) {
+                    field.classList.add('hidden');
+                });
+                labels.forEach(function(labels) {
+                    labels.classList.add('hidden');
+                });
+            }
+
+            // Muestra los campos específicos
+            function showFields(fieldIds) {
+                fieldIds.forEach(function(fieldId) {
+                    var field = document.getElementById(fieldId);
+                    if (field) {
+                        field.classList.remove('hidden');
+                    }
+                });
+            }
+
+            function showLabels(labelsIdS) {
+                labelsIdS.forEach(function(labelId) {
+                    var label = document.getElementById(labelId);
+                    if (label) {
+                        label.classList.remove('hidden');
+                    }
+                });
+            }
+
+            function createFields(selectElement) {
+                var rulesData = selectElement.getAttribute('data-rules');
+                try {
+                    var parsedRulesData = JSON.parse('{{ rules_form | tojson | safe }}');
+                    var seleccion = selectElement;
+                    var camposDinamicos = document.getElementById('dinamicFields');
+                    camposDinamicos.innerHTML = ''; // Limpiar campos anteriores
+                    // Obtener datos de la regla seleccionada
+                    var reglaSeleccionada = seleccion.value;
+                    var datosRegla = parsedRulesData[reglaSeleccionada];
+
+                    if (datosRegla) {
+                        // Crear campos dinámicamente según los parámetros
+                        Object.keys(datosRegla.parametros).forEach(function(key) {
+                            var label = document.createElement('label');
+                            label.textContent = key + ':';
+
+                            var input = document.createElement('input');
+                            input.type = 'text';
+                            input.id = key;
+
+                            camposDinamicos.appendChild(label);
+                            camposDinamicos.appendChild(input);
+                            camposDinamicos.appendChild(document.createElement('br'));
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }     
+            }
+
+            if(window.location.pathname === '/rules') {
+                document.getElementById('guardarRegla').addEventListener('click', function() {
+                    var reglaSeleccionada = document.getElementById('rules_data').value;
+                    var parsedRulesData = JSON.parse('{{ rules_form | tojson | safe }}');
+                    var datosRegla = parsedRulesData[reglaSeleccionada];
+                    Object.keys(datosRegla.parametros).forEach(function(key) {
+                            datosRegla.parametros[key] = document.getElementById(key).value;
+                        });
+                        // Llamar a la función saveRule
+                        saveRule(datosRegla);
+                    });
+            }
+
+            function saveRule(datosRegla) {
+                // Hacer una solicitud POST para guardar la regla en el backend
+                fetch('/guardar_regla', {
+                    method: 'POST', 
+                    headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            datosRegla
+                        }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al guardar la regla');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('dinamicFields').innerHTML = ''; // Limpiar campos dinámicos
+                    //Diccionario en el que se almacena el mensaje de OK de guardado de las reglas y la lista de reglas
+                    info = JSON.parse(data); 
+                    // Muestra un mensaje de éxito
+                    alert(info.mensaje);
+                    ShowRules();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al guardar la regla');
+                });
+            }
+
+            function ShowRules() {
+                fetch('/cargar_reglas')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Lógica para manejar las reglas recibidas del servidor
+                        const reglasList = document.getElementById('reglasList');
+                        // Limpiar la lista antes de agregar nuevas reglas
+                        reglasList.innerHTML = '';
+                        // Verificar si la lista de reglas no está vacía
+                        if (data.reglas.length > 0) {
+                            // Agregar cada regla a la lista
+                            data.reglas.forEach(rule => {
+                                const li = document.createElement('li');
+                                const nombre = data.codigos_nombres_reglas[rule.split(".")[0]];
+                                li.textContent = `${rule} - ${nombre}`;
+
+                                li.addEventListener('click', function() {
+                                    navigateToReglaPage(rule);
+                                });
+                                reglasList.appendChild(li);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error al obtener reglas:', error));
+            }
+
+            function navigateToReglaPage(rule) {
+                // Redirige a la página de la regla específica
+                window.location.href = `/regla/${rule}`;
+            }
+
+            function saveFormValues(form) {
+                var formData = new FormData(form);
+
+                // Convierte el FormData a un objeto simple
+                var formValues = {};
+                formData.forEach(function (value, key) {
+                    formValues[key] = value;
+                });
+
+                // Guarda los valores en sessionStorage
+                sessionStorage.setItem('formValues', JSON.stringify(formValues));
+            }
+
+            function restoreFormValues(formValues) {
+                var form = document.getElementById('data-form');
+                // Recorre los campos del formulario y establece los valores guardados
+                for (var key in formValues) {
+                    var input = form.querySelector('[name="' + key + '"]');
+                    if (input) {
+                        input.value = formValues[key];
+                    }
+                }
+            }
+
+            async function loadJSON() {
+                try {
+                    // Abre la ventana de selección de archivo
+                    const fileHandle = await window.showOpenFilePicker();
+
+                    // Obtiene el contenido del archivo
+                    const file = await fileHandle[0].getFile();
+                    const content = await file.text();
+
+                    // Parsea el contenido JSON
+                    const jsonData = JSON.parse(content);
+                    // Actualiza el formulario con la información del JSON
+                    updateForm(jsonData);
+                } catch (error) {
+                    console.error('Error al cargar el archivo JSON:', error);
+                }
+            }
+
+            function updateForm(jsonData) {
+                for (const section in jsonData) {
+                    if (Object.hasOwnProperty.call(jsonData, section)) {
+                        const formSection = document.getElementsByName(section)
+                        if (formSection) {
+                            console.log("section", section)
+                            const sectionData = jsonData[section];
+                            for (const key in sectionData) {
+                                if (Object.hasOwnProperty.call(sectionData, key)) {
+                                    const formElement = document.getElementById(key.toLowerCase() + "_" + section.toLowerCase())
+                                    if (formElement) {
+                                        // Manejar diferentes tipos de elementos del formulario
+                                        if (formElement.tagName === "INPUT" || formElement.tagName === "SELECT") {
+                                            formElement.value = sectionData[key];
+                                        } 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                if (window.location.pathname === '/rules') {
+                    ShowRules();
+                }
+                var dropdown = document.querySelector('.dropdown');
+                dropdown.addEventListener('click', function() {
+                    dropdown.classList.toggle('show');
+                });
+                initHelpIcons(); 
+                toggleFields();
+                document.getElementById('type_input').addEventListener('change', toggleFields);
+                document.getElementById('type_error').addEventListener('change', toggleFields);
+                document.getElementById('type_output').addEventListener('change', toggleFields);
+                document.getElementById('type_data').addEventListener('change', toggleFields);
+
+                if (window.location.pathname === '/input') {
+                    var form = document.getElementById('data-form');
+
+                    // Evento para manejar el cambio de página
+                    document.addEventListener('visibilitychange', function () {
+                        if (document.visibilityState === 'hidden') {
+                            // La página está siendo oculta, guarda los valores del formulario
+                            saveFormValues(form);
+                        }
+                    });
+                    // Verifica si hay valores guardados en sessionStorage
+                    var storedFormValues = sessionStorage.getItem('formValues');
+
+                    if (storedFormValues) {
+                        // Convierte los valores a un objeto y restaura los campos del formulario
+                        var formValues = JSON.parse(storedFormValues);
+                        restoreFormValues(formValues);
+                    }
+                }
+                });
+            
+        </script>
+    </body>
+</html>

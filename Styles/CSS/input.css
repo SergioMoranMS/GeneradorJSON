@@ -1,0 +1,197 @@
+/* Estilo para la barra de navegación */
+#nav-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #004080;
+    padding: 10px;
+    text-align: center;
+    color: #fff; 
+    max-height: 120px;
+} 
+
+.nav-title {
+    font-size: 24px; 
+    font-weight: bold; 
+}
+
+.logo {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    max-width: 162px;
+}
+
+/* Estilos para el menú desplegable */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+#body{
+    background-color: #7099c1;
+}
+
+#inputPageContent, #rulesPageContent{
+    margin-top: 20px;
+}
+
+#main-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    height: 60vh;
+    margin: 0;
+} 
+
+/* Estilo general para todas las secciones */
+section {
+    position: relative;
+    box-sizing: border-box;
+    padding: 20px;
+    margin: 0 10px 20px;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    max-height: calc(55vh - 42px);
+    background-color: #ffffff;
+}
+
+.section-container {
+    box-sizing: border-box;
+    margin: 0;
+    max-width: calc(50% - 20px);
+}
+
+.section-container h2 {
+    background-color: #ffffff;
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+}
+
+label {
+    display: flex;
+    margin-bottom: 5px;
+    font-size: 14px;
+    justify-content: space-between;
+}
+
+#help {
+    max-width: 15px;
+    right: 10px; 
+}
+
+input,
+select {
+    width: calc(100% - 16px); 
+    padding: 3px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: calc(100% - 16px); 
+}
+
+/* .button-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 20px;
+    margin-bottom: 19px;
+} */
+
+/* Estilos para los botones */
+/* .button-container button {
+    margin: 0 10px; 
+} */
+
+button {
+    background-color: #004080; 
+    color: #ffffff; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #00264d;
+}
+
+.generate-button {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px; 
+}
+
+.footer {
+    background-color: #004080;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.footer-text {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#infoContainer {
+    display: none;
+    position: absolute;
+    background-color: #bfcc9f; 
+    border: 1px solid #000; 
+    padding: 10px; 
+}
+
+#infoContainer.show {
+    display: block;
+}
+
+#reglasList li {
+    cursor: pointer;
+    transition: color 0.3s ease, background-color 0.3s ease; /* Agrega transiciones suaves */
+}
+
+#reglasList li:hover {
+    color: #004080; /* Cambia el color del texto al pasar el ratón sobre el elemento */
+}
+
+#reglasList li:active {
+    background-color: #e0e0e0; /* Cambia el fondo al hacer clic en el elemento */
+}
+
+.hidden {
+    display: none !important;
+}

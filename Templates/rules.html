@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+
+{% block rulesPageContent %}
+    <form id="data-form2">
+        <div id="main-form">
+            <div class="section-container">
+                <h2>Rules</h2>
+                <section>
+                    <div id="info-rules" class="info">
+                        <label for="rules_data">RULES:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="RULES"></img>
+                    </div>  
+                    <select id="rules_data" name="rules_data" data-rules="{{ rules_form }}" onchange="createFields(this)">
+                        <option value="" selected>Seleccione una regla</option>                        
+                        {% for rule in rules_form %}
+                            <option value="{{ rule }}" {% if rules_form == rule %}selected{% endif %}>{{ rule }}</option>
+                        {% endfor %}
+                    </select><br>
+                    <!-- <div id="dinamicFields"></div> -->
+                </section>
+                <button type="button" class="generate-button" id="guardarRegla">Guardar Regla</button>
+            </div>
+            <div class="section-container">
+                <div id="dinamicFieldsContainer">
+                    <h2>Campos</h2>
+                    <section id="dinamicFields"></section>
+                </div>
+            </div>
+            <div class="section-container">
+                <h3>Lista de Reglas:</h3>
+                <ul id="reglasList">
+                </ul>
+            </div>            
+        </div>
+    </form>
+{% endblock %}

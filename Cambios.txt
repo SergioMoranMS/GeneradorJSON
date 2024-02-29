@@ -1,0 +1,25 @@
+Puntos para la reunión de 16/02:
+  -Mejorar el diseño de la lista de reglas.
+  -Depurar el JSON con los campos que no están bien. --> Hecho
+  -Menu desplegable con:
+      -Generar JSON
+      -Cargar un JSON desde disco.
+  -Eliminar reglas.
+  -Glosario de reglas.
+
+  Funcionalidades restantes:
+   -Restricción de formularios (pe: campos exclusivamente numericos, etc).
+   -Cargar JSON desde disco.
+          Falta la página de reglas, solo se carga la página de inputs.
+   -Info de cada campo --> Listo
+          Falta rellenar la estructura con la info de los campos
+   -La lista de reglas que sean elementos clickables y te lleven a otra página donde puedas eliminar la regla 
+    y ver la info de los campos y demás.
+          Eliminar y actualizar la regla
+          ¿Que tenemos que mostrar exactamente en esa página?
+   -Alojamiento en la web.
+       
+
+
+
+

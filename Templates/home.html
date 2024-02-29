@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador JSON</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/home.css') }}">
+</head>
+<body>
+    <div id="main-container">
+        <img id="logo" src="{{ url_for('static', filename='Photos/ms3.jpg') }}" alt="Logo de tu compañía">
+        <h1>Bienvenido al Generador JSON</h1>
+        <button class="btn-start" onclick="navigateToGenerator()">Iniciar Generador JSON</button>
+    </div>
+
+    <script>
+        function navigateToGenerator() {
+            // Agrega una clase al body para iniciar la animación
+            document.body.classList.add('transition');
+            
+            // Redirige a la página de índice después de un tiempo (ajusta según la duración de tu animación)
+            setTimeout(function() {
+                window.location.href = '/input';
+            }, 500); // 5000 milisegundos = 5 segundos (ajusta según la duración de tu animación)
+        }
+    </script>
+</body>
+</html>

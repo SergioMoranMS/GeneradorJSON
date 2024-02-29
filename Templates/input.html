@@ -1,0 +1,267 @@
+{% extends 'index.html' %}
+
+{% block inputPageContent %}
+    <form id="data-form">
+        <div id="main-form">
+            <div class="section-container" name="input">
+                <h2>Input</h2>
+                <section>
+                    <div id="info-country-id" class="info">
+                        <label for="country_id_input">COUNTRY_ID:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="COUNTRY_ID"></img>
+                    </div>
+                    <input type="text" id="country_id_input" name="country_id_input" value="{{ input_form.country_id_input }}"><br>
+
+                    <div id="info-project" class="info">
+                        <label for="project_input">PROJECT:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="PROJECT"></img>
+                    </div>
+                    <input type="text" id="project_input" name="project_input" value="{{ input_form.project_input }}"><br>
+                    <div id="info-entity-id" class="info">
+                        <label for="entity_id_input">ENTITY_ID:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="ENTITY_ID"></img>
+                    </div>
+                    <input type="text" id="entity_id_input" name="entity_id_input" value="{{ input_form.entity_id_input }}"><br>
+                    <div id="info-domain" class="info">
+                        <label for="domain_input">DOMAIN:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DOMAIN"></img>
+                    </div>   
+                    <input type="text" id="domain_input" name="domain_input" value="{{ input_form.domain_input }}"><br> 
+                    <div id="info-sub-domain" class="info">
+                        <label for="sub_domain_input">SUB_DOMAIN:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="SUB_DOMAIN"></img>
+                    </div>
+                    <input type="text" id="sub_domain_input" name="sub_domain_input" value="{{ input_form.sub_domain_input }}"><br>
+                    <div id="info-segment" class="info">
+                        <label for="segment_input">SEGMENT:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="SEGMENT"></img>
+                    </div>
+                    <input type="text" id="segment_input" name="segment_input" value="{{ input_form.segment_input }}"><br>
+                    <div id="info-area" class="info">
+                        <label for="area_input">AREA:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="AREA"></img>
+                    </div>
+                    <input type="text" id="area_input" name="area_input" value="{{ input_form.area_input }}"><br>
+                    <div id="info-type" class="info">
+                        <label for="type_input">TYPE:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="TYPE"></img>
+                    </div>
+                    <select id="type_input" name="type_input">
+                        {% for option in input_form.valuesTypeInput %}
+                            <option value="{{ option }}" {% if input_form.type_input == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select><br>
+                    <div id="info-path" class="info info-input">
+                        <label for="path_input">PATH:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="PATH"></img>
+                    </div>   
+                    <input type="text" id="path_input" name="path_input" value="{{ input_form.path_input }}" class="input-field">
+                    <div id="info-header" class="info info-input">
+                        <label for="header_input">HEADER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="HEADER"></img>
+                    </div>
+                    <input type="text" id="header_input" name="header_input" value="{{ input_form.header_input }}" class="input-field">
+                    <div id="info-delimiter" class="info info-input">
+                        <label for="delimiter_input">DELIMITER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}"8 data-regla="DELIMITER"></img>
+                    </div>
+                    <input type="text" id="delimiter_input" name="delimiter_input" value="{{ input_form.delimiter_input }}" class="input-field">
+                    <div id="info-account" class="info info-input">
+                        <label for="account_input">ACCOUNT:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="ACCOUNT"></img>
+                    </div>
+                    <input type="text" id="account_input" name="account_input" value="{{ input_form.account_input }}" class="input-field">
+                    <div id="info-encrypt" class="info info-input">
+                        <label for="encrypt_input">ENCRYPT:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="ENCRYPT"></img>
+                    </div>
+                    <select id="encrypt_input" name="encrypt_input" class="input-field">
+                        <option value="TRUE" {% if input_form.encrypt == 'TRUE' %}selected{% endif %}>TRUE</option>
+                        <option value="FALSE" {% if input_form.encrypt == 'FALSE' %}selected{% endif %}>FALSE</option>
+                    </select>
+                    <div id="info-key" class="info info-input">
+                        <label for="key_input">KEY:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="KEY"></img>
+                    </div>
+                    <input type="text" id="key_input" name="key_input" value="{{ input_form.key_input }}" class="input-field">
+                    <div id="info-host" class="info info-input">
+                        <label for="host_input">HOST:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="HOST"></img>
+                    </div>
+                    <input type="text" id="host_input" name="host_input" value="{{ input_form.host_input }}" class="input-field">
+                    <div id="info-port" class="inf info-input">
+                        <label for="port_input">PORT:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="PORT"></img>
+                    </div>
+                    <input type="text" id="port_input" name="port_input" value="{{ input_form.port_input }}" class="input-field">
+                    <div id="info-db-name" class="info info-input">
+                        <label for="dbname_input">DB_NAME:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DB_NAME"></img>
+                    </div>
+                    <input type="text" id="dbname_input" name="dbname_input" value="{{ input_form.dbname_input }}"class="input-field">
+                    <div id="info-db-table" class="info info-input">
+                        <label for="dbtable_input">DB_TABLE:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DB_TABLE"></img>
+                    </div>
+                    <input type="text" id="dbtable_input" name="dbtable_input" value="{{ input_form.dbtable_input }}" class="input-field">
+                    <div id="info-db-user" class="info info-input">
+                        <label for="Ddbuer_input">DB_USER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DB_USER"></img>
+                    </div>
+                    <input type="text" id="Ddbuer_input" name="Ddbuer_input" value="{{ input_form.Ddbuer_input }}" class="input-field">
+                    <div id="info-db-pswd" class="info info-input">
+                        <label for="dbpassword_input">DB_PSWD:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DB_PSWD"></img>
+                    </div>
+                    <input type="text" id="dbpassword_input" name="dbpassword_input" value="{{ input_form.dbpassword_input }}" class="input-field"><br>
+                    <div id="info-temp-path" class="info info-input">
+                        <label for="temppath_input">TEMP_PATH:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="TEMP_PATH"></img>
+                    </div>
+                    <input type="text" id="temppath_input" name="temppath_input" value="{{ input_form.temppath_input }}" class="input-field">
+                    <div id="info-data-date" class="info info-input">
+                        <label for="data_date_input">DATA_DATE:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DATA_DATE"></img>
+                    </div>
+                    <input type="text" id="data_date_input" name="data_date_input" value="{{ input_form.data_date_input }}" class="input-field">
+                    <!-- <div id="info-email" class="info">
+                        <label for="email">EMAIL:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="EMAIL"></img>
+                    </div>
+                    <input type="text" id="email" name="email" value="{{ input_form.email }}"><br> -->
+                </section>
+            </div>
+            <div class="section-container" name="error">
+                <h2>Error</h2>
+                <section>
+                    <div id="info-path" class="info">
+                        <label for="path_error">PATH:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="PATH"></img>
+                    </div>
+                    <input type="text" id="path_error" name="path_error" value="{{ error_form.path_error }}"><br>
+                    <div id="info-type" class="info">
+                        <label for="type_error">TYPE:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="TYPE"></img>
+                    </div>
+                    <select id="type_error" name="type_error">
+                        {% for option in error_form.valuesTypeError %}
+                            <option value="{{ option }}" {% if error_form.type_error == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select><br>
+                    <div id="info-header_error" class="info info-input">
+                        <label for="header_error">HEADER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="HEADER"></img>
+                    </div>
+                    <select id="header_error" name="header_error" class="input-field">
+                        <option value="TRUE" {% if error_form.header_error == 'TRUE' %}selected{% endif %}>TRUE</option>
+                        <option value="FALSE" {% if error_form.header_error == 'FALSE' %}selected{% endif %}>FALSE</option>
+                    </select>
+                    <div id="info-delimiter_error" class="info info-input">
+                        <label for="delimiter_error">DELIMITER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DELIMITER"></img>
+                    </div>
+                    <input type="text" id="delimiter_error" name="delimiter_error" value="{{ error_form.delimiter_error }}" class="input-field">
+                    <div id="info-account_error" class="info info-input">
+                        <label for="account_error">ACCOUNT:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="ACCOUNT"></img>
+                    </div>
+                    <input type="text" id="account_error" name="account_error" value="{{ error_form.account_error }} " class="input-field">
+                    <div id="info-key_error" class="info info-input">
+                        <label for="key_error">KEY:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="KEY"></img>
+                    </div>
+                    <input type="text" id="key_error" name="key_error" value="{{ error_form.key_error }}" class="input-field">
+                </section>
+            </div>
+            <div class="section-container" name="output">
+                <h2>Output</h2>
+                <section>
+                    <div id="info-path" class="info">
+                        <label for="path_output">PATH:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="PATH"></img>
+                    </div>
+                    <input type="text" id="path_output" name="path_output" value="{{ output_form.path_output }}"><br>
+                    <div id="info-type" class="info">
+                        <label for="type_output">TYPE:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="TYPE"></img>
+                    </div>
+                    <select id="type_output" name="type_output">
+                        {% for option in output_form.valuesTypeOutput %}
+                            <option value="{{ option }}" {% if output_form.type_output == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select><br>
+                    <div id="info-header_output" class="info info-input">
+                        <label for="header_output">HEADER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="HEADER"></img>
+                    </div>
+                    <select id="header_output" name="header_output" class="input-field">
+                        <option value="TRUE" {% if output_form.header_output == 'TRUE' %}selected{% endif %}>TRUE</option>
+                        <option value="FALSE" {% if output_form.header_output == 'FALSE' %}selected{% endif %}>FALSE</option>
+                    </select>
+                    <div id="info-delimiter_output" class="info info-input">
+                        <label for="delimiter_output">DELIMITER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DELIMITER"></img>
+                    </div>
+                    <input type="text" id="delimiter_output" name="delimiter_output" value="{{ output_form.delimiter_output }}" class="input-field">
+                    <div id="info-account_output" class="info info-input">
+                        <label for="account_output">ACCOUNT:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="ACCOUNT"></img>
+                    </div>
+                    <input type="text" id="account_output" name="account_output" value="{{ output_form.account_output }}" class="input-field">
+                    <div id="info-key_output" class="info info-input">
+                        <label for="key_output">KEY:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="KEY"></img>
+                    </div>
+                    <input type="text" id="key_output" name="key_output" value="{{ output_form.key_output }}" class="input-field">
+                    <div id="info-partitions_output" class="info info-input">
+                        <label for="partitions_output">PARTITIONS:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="PARTITIONS"></img>
+                    </div>
+                    <input type="text" id="partitions_output" name="partitions_output" value="{{ output_form.partitions_output }}" class="input-field">
+                </section>
+            </div>
+            <div class="section-container" name="data">
+                <h2>Data</h2>
+                <section>
+                    <div id="info-path" class="info">
+                        <label for="data_path">PATH:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="PATH"></img>
+                    </div>
+                    <input type="text" id="data_path" name="data_path" value="{{ data_form.data_path }}"><br>
+                    <div id="info-type" class="info">
+                        <label for="type_data">TYPE:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="TYPE"></img>
+                    </div>
+                    <select id="type_data" name="type_data">
+                        {% for option in data_form.valuesTypeData %}
+                            <option value="{{ option }}" {% if data_form.type_data == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select><br>
+                    <div id="info-header_data" class="info info-input">
+                        <label for="header_data">HEADER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="HEADER"></img>
+                    </div>
+                    <select id="header_data" name="header_data" class="input-field">
+                        <option value="TRUE" {% if data_form.header_data == 'TRUE' %}selected{% endif %}>TRUE</option>
+                        <option value="FALSE" {% if data_form.header_data == 'FALSE' %}selected{% endif %}>FALSE</option>
+                    </select>
+                    <div id="info-delimiter_data" class="info info-input">
+                        <label for="delimiter_data">DELIMITER:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="DELIMITER"></img>
+                    </div>
+                    <input type="text" id="delimiter_data" name="delimiter_data" value="{{ data_form.delimiter_data }}" class="input-field">
+                    <div id="info-account_data" class="info info-input">
+                        <label for="account_data">ACCOUNT:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="ACCOUNT"></img>
+                    </div>
+                    <input type="text" id="account_data" name="account_data" value="{{ data_form.account_data }}" class="input-field">
+                    <div id="info-key_data" class="info info-input">
+                        <label for="key_data">KEY:</label>
+                        <img id="help" class="help-icon" src="{{ url_for('static', filename='Photos/help.jpg') }}" data-regla="KEY"></img>
+                    </div>
+                    <input type="text" id="key_data" name="key_data" value="{{ data_form.key_data }}" class="input-field">
+                </section>
+            </div>
+        </div>
+    </form>
+{% endblock %}
